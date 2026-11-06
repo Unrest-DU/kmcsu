@@ -164,7 +164,7 @@ tk.addEventListener("mouseenter",function(){hold=true});tk.addEventListener("mou
 (function(){
 var Q="Where do you actually spend your free period?";
 var O=["BCR","Hostel Canteen","Kamla Nagar","Library"];
-var EP="";   // optional: Apps Script / Firebase endpoint for shared counts
+var EP="https://script.google.com/macros/s/AKfycbzJdNaze15HRdhEvTKcBZ1XhH241aWdfN7gYHA8Sqz4yKmhYvRoIz1xMOip_O1Er-M99w/exec";   // optional: Apps Script / Firebase endpoint for shared counts
 var K="kmcPoll1",el=$("#poll"),votes=O.map(function(){return 0}),mine=-1;
 try{var s=JSON.parse(localStorage.getItem(K));if(s&&s.v&&s.v.length===O.length){votes=s.v;mine=s.m}}catch(e){}
 function save(){try{localStorage.setItem(K,JSON.stringify({v:votes,m:mine}))}catch(e){}}
