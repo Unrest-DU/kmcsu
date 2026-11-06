@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kirori Mal College · Students’ Union</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--brick:#99261f;--deep:#4d110e;--blush:#f6dcd2;--paper:#fff6f1;--ink:#2a1210;--sky:#3d9bdc;--gold:#ffcf6b;
+--tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23f6dcd2' stroke-width='1.2'%3E%3Cpath d='M22 2L42 22 22 42 2 22Z'/%3E%3Cpath d='M22 12L32 22 22 32 12 22Z'/%3E%3Ccircle cx='22' cy='22' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+--tile2:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%2399261f' stroke-width='1.2'%3E%3Cpath d='M22 2L42 22 22 42 2 22Z'/%3E%3Cpath d='M22 12L32 22 22 32 12 22Z'/%3E%3Ccircle cx='22' cy='22' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+--ease:cubic-bezier(.2,.75,.15,1);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;background:var(--deep);color:var(--paper);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,var(--brick),var(--deep) 85%);--mx:0;--my:0}
+.lat{position:absolute;inset:-60px;background:var(--tile);background-size:44px;opacity:.14;transform:translate(calc(var(--mx)*-16px),calc(var(--my)*-12px));animation:drift 70s linear infinite,fadein 2s var(--ease) both;-webkit-mask-image:radial-gradient(70% 80% at 30% 30%,#000,transparent);mask-image:radial-gradient(70% 80% at 30% 30%,#000,transparent)}
+@keyframes drift{to{background-position:440px 220px}}
+@keyframes fadein{from{opacity:0}}
+nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:22px clamp(18px,4vw,56px);font-size:.9rem;font-weight:500;animation:fadein 1.2s .2s both}
+nav .mark{display:flex;align-items:center;gap:10px}
+nav .mark i{width:22px;height:22px;background:var(--tile);background-size:22px;display:block}
+.tick{position:relative;height:2em;width:min(46ch,52vw);opacity:.8}
+.tick>*{position:absolute;right:0;top:0;white-space:nowrap;line-height:2em;opacity:0;transform:translateY(70%);transition:opacity .6s,transform .8s var(--ease);pointer-events:none}
+.tick>.on{opacity:1;transform:none;pointer-events:auto}
+.tick>.out{transform:translateY(-70%)}
+.tb{font:inherit;line-height:1.5!important;color:var(--paper);background:rgba(255,255,255,.08);border:1px solid rgba(246,220,210,.5);border-radius:99px;padding:0 1em;cursor:pointer;transition:opacity .6s,transform .8s var(--ease),background .25s,color .25s}
+.tb:hover{background:var(--paper);color:var(--ink)}
+.tb:focus-visible{outline:2px solid var(--paper);outline-offset:2px}
+.title{position:relative;z-index:2;padding:clamp(18px,5vh,60px) clamp(18px,4vw,56px) 0;flex:1;display:flex;flex-direction:column;justify-content:center}
+h1{margin:0;font-weight:800;font-size:clamp(3rem,10.5vw,9.5rem);line-height:.92;letter-spacing:-.04em;color:var(--paper)}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+h1 .ln>span{display:block}
+.ch{display:inline-block;animation:up 1.15s calc(.15s + var(--i)*.05s) var(--ease) backwards;transition:transform .5s var(--ease),color .3s}
+.ch:hover{transform:translateY(-.06em);color:var(--gold)}
+@keyframes up{from{transform:translateY(110%) rotate(7deg);opacity:0}}
+/* poll */
+.game{position:absolute;z-index:1;right:clamp(0px,4vw,60px);top:50%;width:clamp(240px,26vw,340px);transform:translateY(-50%);animation:fadein 1.4s .9s backwards}
+.pk{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+.pq{margin:0 0 6px;font-size:1.15rem;font-weight:500;line-height:1.25;letter-spacing:-.01em;color:var(--blush)}
+.po{position:relative;display:flex;justify-content:space-between;align-items:center;width:100%;min-height:52px;margin:0;padding:0;border:0;border-bottom:1px solid rgba(246,220,210,.22);border-radius:0;background:none;color:var(--paper);font:inherit;font-weight:500;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:color .2s,padding .25s var(--ease)}
+div.po{cursor:default}
+button.po:active{color:var(--gold);padding-left:6px}
+@media (hover:hover){button.po:hover{color:var(--gold);padding-left:6px}}
+.po:focus-visible{outline:2px solid var(--paper);outline-offset:2px}
+.po .bar{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:rgba(246,220,210,.5);transition:width .9s var(--ease)}
+.po.me{color:var(--gold);font-weight:800}
+.po.me .bar{background:var(--gold)}
+.po span{position:relative}
+.po span+span{font-variant-numeric:tabular-nums;opacity:.8}
+.pn{margin:12px 0 0;font-size:.75rem;opacity:.55}
+.sub{margin:clamp(14px,2.4vh,26px) 0 0;font-size:clamp(1rem,1.7vw,1.4rem);font-weight:300;color:var(--blush);max-width:30ch;opacity:0;animation:fadein 1.2s .7s forwards}
+.sub::before{content:"";display:block;width:56px;height:3px;background:var(--sky);margin-bottom:16px;transform-origin:left;transform:scaleX(0);animation:grow .9s .6s var(--ease) forwards}
+@keyframes grow{to{transform:none}}
+.facade{position:relative;z-index:2;display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(10px,1.6vw,20px);align-items:end;padding:clamp(24px,5vh,56px) clamp(18px,4vw,56px) clamp(24px,4vh,40px);overflow:hidden}
+.p{position:relative;height:clamp(150px,27vh,250px);border:0;padding:16px;text-align:left;color:var(--paper);font:inherit;cursor:not-allowed;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(246,220,210,.22);clip-path:inset(100% 0 0 0);animation:rise 1.1s var(--ease) forwards;transition:background .4s,box-shadow .4s}
+.p::before{content:"";position:absolute;inset:0;background:var(--tile);background-size:36px;opacity:.16;transition:opacity .5s}
+.p::after{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:var(--blush);opacity:.28}
+.p:hover,.p:focus-visible{background:rgba(255,255,255,.08)}
+.p:hover::before{opacity:.3}
+.p:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+.p b{position:relative;font-size:1.15rem;font-weight:500;opacity:.85}
+.p em{position:relative;font-style:normal;font-size:.78rem;align-self:flex-start;padding:.25em .7em;border-radius:99px;border:1px solid rgba(246,220,210,.35);color:var(--blush)}
+.p:nth-child(2){animation-delay:1.05s}
+@keyframes rise{to{clip-path:inset(0)}}
+.p.m{height:clamp(190px,34vh,320px);cursor:pointer;color:var(--ink);background:#ffc93c;box-shadow:0 0 0 1px var(--gold),0 24px 90px rgba(255,207,107,.35);animation:rise 1.2s .8s var(--ease) forwards,glow 3.4s 2.2s ease-in-out infinite;order:0}
+.p.m::before{background:var(--tile2);opacity:.13}
+.p.m::after{background:var(--sky);opacity:1;height:9px}
+.p.m b{font-size:clamp(1.3rem,2.2vw,1.9rem);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.p.m small{position:relative;font-size:.85rem;font-weight:500;opacity:.75}
+.p.m .go{position:relative;align-self:flex-start;margin-top:6px;padding:.55em 1.1em;border-radius:99px;background:var(--brick);color:var(--paper);font-weight:600;font-size:.9rem;transition:transform .35s var(--ease),background .3s}
+.p.m:hover .go{transform:translateX(4px);background:var(--deep)}
+.p.m:hover{box-shadow:0 0 0 1px var(--gold),0 30px 110px rgba(255,207,107,.5)}
+@keyframes glow{50%{box-shadow:0 0 0 1px var(--gold),0 24px 130px rgba(255,207,107,.6)}}
+.sweep{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(100deg,transparent 42%,rgba(255,236,205,.16) 50%,transparent 58%);transform:translateX(-100%);animation:sweep 9s 2.4s ease-in-out infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}45%,100%{transform:translateX(100%)}}
+.base{position:relative;z-index:2;height:6px;background:repeating-linear-gradient(90deg,var(--sky) 0 12px,var(--paper) 12px 24px);opacity:.85}
+.foot{position:relative;z-index:2;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px clamp(18px,4vw,56px) 18px;font-size:.8rem;color:var(--blush);opacity:.7}
+@media (max-width:820px){
+ nav{flex-wrap:wrap;row-gap:4px}
+ .tick{width:100%}
+ .tick>*{right:auto;left:0}
+ .game{position:relative;right:auto;top:auto;transform:none;width:100%;max-width:420px;margin-top:28px;order:1}
+ .facade{grid-template-columns:1fr}
+ .p{height:120px}
+ .p.m{height:190px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;animation-iteration-count:1!important}.sweep{display:none}}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--paper);color:var(--ink);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s var(--ease);z-index:50;font-weight:500}
+#toast.on{opacity:1;transform:translateX(-50%)}
+/* form */
+dialog{width:min(580px,94vw);max-height:92vh;padding:0;border:0;border-radius:18px;background:var(--paper);color:var(--ink);box-shadow:0 40px 120px rgba(0,0,0,.5)}
+dialog[open]{animation:pop .5s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.97)}}
+dialog::backdrop{background:rgba(40,8,6,.7);backdrop-filter:blur(4px)}
+.dlg{padding:22px 22px 26px}
+.dlg h2{margin:0 0 4px;font-size:1.55rem;letter-spacing:-.02em}
+.dlg .sub2{margin:0 0 12px;color:var(--brick);font-weight:600}
+.close{float:right;background:var(--blush);border:0;color:var(--ink);border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer}
+.info{background:var(--blush);border-radius:12px;padding:12px 16px;font-size:.9rem;margin:10px 0 14px}
+.info ul{margin:4px 0 8px;padding-left:18px}.info a{color:var(--brick);font-weight:600}
+label{display:block;font-size:.9rem;margin:14px 0 5px;font-weight:600}
+input,select{width:100%;padding:11px 13px;border-radius:10px;border:1px solid #e3c5ba;background:#fff;color:var(--ink);font:inherit}
+input:focus-visible,select:focus-visible,button:focus-visible,.opt input:focus-visible+span{outline:2px solid var(--brick);outline-offset:1px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;margin:0}
+.opt input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt span{display:block;padding:9px 15px;border:1px solid #e3c5ba;border-radius:99px;background:#fff;font-weight:400;transition:background .2s,color .2s}
+.opt input:checked+span{background:var(--brick);color:var(--paper);border-color:var(--brick);font-weight:600}
+.qr{display:flex;gap:14px;align-items:center;padding:12px;border:1px dashed #d3a899;border-radius:12px}
+.qr .box{width:132px;height:132px;flex:none;background:#fff;border-radius:10px;display:grid;place-items:center;color:#777;font-size:.75rem;text-align:center;padding:6px;overflow:hidden;border:1px solid #eadad2}
+.qr .box img{width:100%;height:100%;object-fit:contain}
+.qr p{margin:0;font-size:.88rem;opacity:.75}
+.err{color:#b3261e;font-size:.82rem;min-height:1em;margin-top:3px}
+.btn{margin-top:18px;width:100%;padding:13px;border:0;border-radius:99px;background:var(--brick);color:var(--paper);font:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:background .25s}
+.btn:hover{background:var(--deep)}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid #d3a899;margin-top:10px}
+.summary{white-space:pre-wrap;background:var(--blush);border-radius:12px;padding:14px;font-size:.88rem;margin:12px 0}
+</style>
+</head>
+<body>
+<section class="hero" id="hero">
+  <div class="lat"></div>
+  <nav><div class="mark"><i></i>KMC Students’ Union</div><div class="tick" id="tick"></div></nav>
+  <div class="title">
+    <div class="game" id="poll" aria-live="polite"></div>
+    <h1><span class="ln"><span>Kirori Mal</span></span><span class="ln"><span>College</span></span></h1>
+    <p class="sub">an online space created by the student union</p>
+  </div>
+  <div class="facade">
+    <button class="p m" id="merch" aria-label="Open the merchandise reservation form"><b>Official<br>Merch</b><small>Batch of 2026–27 · Limited quantity</small><span class="go">Reserve yours</span></button>
+    <button class="p" data-n="more"><b>More coming soon</b></button>
+    <div class="sweep"></div>
+  </div>
+  <div class="base"></div>
+  <div class="foot"><span>Made by the Students’ Union, Kirori Mal College</span><span>University of Delhi</span></div>
+</section>
+<dialog id="dlg" aria-labelledby="ttl"><div class="dlg" id="dbody"></div></dialog>
+<div id="toast" role="status"></div>
+<script>
+// ---- Edit these ----
+var MERCH = ["Hoodie without Zipper","Hoodie with Zipper","Varsity Jacket","Oversized T-Shirt"];
+var SIZES = ["XS","S","M","L","XL","XXL"];
+var BATCHES = ["2027","2028","2029","2030"];
+var QR_SRC = "";   // payment QR: image data URL or hosted path
+var DEADLINE = new Date("2026-11-20T23:59:59+05:30");
+var WA_NUMBER = "917337550668"; // President
+// --------------------
+var $ = function(s){return document.querySelector(s)};
+var tt;function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},1900)}
+document.querySelectorAll(".p[data-n]").forEach(function(z){z.addEventListener("click",function(){toast("More is on the way. Stay tuned.")})});
+var hero=$("#hero");
+(function(){var k=0;document.querySelectorAll("h1 .ln>span").forEach(function(el){var t=el.textContent;el.setAttribute("aria-label",t);el.innerHTML=t.split("").map(function(c){return '<span class="ch" aria-hidden="true" style="--i:'+(k++)+'">'+(c===" "?"&nbsp;":c)+'</span>'}).join("")})})();
+hero.addEventListener("pointermove",function(e){var r=hero.getBoundingClientRect();hero.style.setProperty("--mx",((e.clientX-r.left)/r.width-.5).toFixed(3));hero.style.setProperty("--my",((e.clientY-r.top)/r.height-.5).toFixed(3))});
+var TICK=[{t:"Headed to BCR?"},{t:"Please join us in Acad Audi for a seminar!"},{t:"Freshers on 14th November!"},{t:"Official KMC Merch is Out!"},{t:"Join the Extended Council",b:1},{t:"Headed to Hostel Canteen?"},{t:"Kamla Nagar is waiting for you ;)"}];
+var tk=$("#tick"),ti=0,hold=false;
+TICK.forEach(function(x){var e=document.createElement(x.b?"button":"span");e.textContent=x.t;if(x.b){e.type="button";e.className="tb";e.tabIndex=-1;e.onclick=function(){toast("Applications are closed as of now.")}}tk.appendChild(e)});
+var els=tk.children;els[0].classList.add("on");
+function show(n){var o=els[ti];o.classList.remove("on");o.classList.add("out");if(o.tagName==="BUTTON")o.tabIndex=-1;ti=n;var e=els[ti];e.classList.remove("out");e.classList.add("on");if(e.tagName==="BUTTON")e.tabIndex=0}
+setInterval(function(){if(!hold)show((ti+1)%els.length)},3400);
+tk.addEventListener("mouseenter",function(){hold=true});tk.addEventListener("mouseleave",function(){hold=false});tk.addEventListener("focusin",function(){hold=true});tk.addEventListener("focusout",function(){hold=false});
+// ---- Poll ----
+(function(){
+var Q="Where do you actually spend your free period?";
+var O=["BCR","Hostel Canteen","Kamla Nagar","Library"];
+var EP="";   // optional: Apps Script / Firebase endpoint for shared counts
+var K="kmcPoll1",el=$("#poll"),votes=O.map(function(){return 0}),mine=-1;
+try{var s=JSON.parse(localStorage.getItem(K));if(s&&s.v&&s.v.length===O.length){votes=s.v;mine=s.m}}catch(e){}
+function save(){try{localStorage.setItem(K,JSON.stringify({v:votes,m:mine}))}catch(e){}}
+function render(){
+  var tot=votes.reduce(function(a,b){return a+b},0),h='<p class="pk">Quick poll</p><p class="pq">'+Q+'</p>';
+  O.forEach(function(o,i){
+    if(mine<0){h+='<button class="po" type="button" data-i="'+i+'"><span>'+o+'</span></button>'}
+    else{var pc=tot?Math.round(votes[i]/tot*100):0;
+      h+='<div class="po'+(i===mine?' me':'')+'"><i class="bar" style="width:'+pc+'%"></i><span>'+o+'</span><span>'+pc+'%</span></div>'}
+  });
+  if(mine>=0)h+='<p class="pn">'+tot+' vote'+(tot===1?'':'s')+'</p>';
+  el.innerHTML=h;
+  if(mine>=0)requestAnimationFrame(function(){el.querySelectorAll(".bar").forEach(function(b){var w=b.style.width;b.style.width="0";requestAnimationFrame(function(){b.style.width=w})})});
+}
+el.addEventListener("click",function(e){
+  var b=e.target.closest("button.po");if(!b||mine>=0)return;
+  var i=+b.dataset.i;votes[i]++;mine=i;save();render();
+  if(EP)try{fetch(EP,{method:"POST",mode:"no-cors",body:JSON.stringify({poll:K,choice:O[i]})})}catch(x){}
+});
+if(EP)fetch(EP+"?poll="+K).then(function(r){return r.json()}).then(function(d){if(d.counts&&d.counts.length===O.length){votes=d.counts;render()}}).catch(function(){});
+render();
+})();
+var dlg=$("#dlg"),body=$("#dbody"),shot=null;
+$("#merch").addEventListener("click",openForm);
+function head(){return '<button class="close" type="button" aria-label="Close" onclick="dlg.close()">×</button><h2 id="ttl">Official College Merch</h2><p class="sub2">Batch of 2026–2027 · Limited quantity only</p>'}
+function info(){return '<div class="info"><b>Last date: 20 November 2026</b><ul><li>Select your preferred merchandise carefully.</li><li>Enter your details accurately, especially your name and size.</li><li>Complete the payment using the QR code in this form.</li></ul>'+
+ '<b>For any queries, please contact</b><br>Parag Saharan (President) · <a href="tel:7337550668">7337550668</a><br>Zuhaib Khan (Vice-President) · <a href="tel:9140221682">9140221682</a><br>Shafiq Ahmed (Joint-Secretary) · <a href="tel:7889323420">7889323420</a></div>'}
+function opts(name,arr,def){return '<div class="opts">'+arr.map(function(x,i){return '<label class="opt"><input type="radio" name="'+name+'" value="'+x+'"'+(i===def?' checked':'')+'><span>'+x+'</span></label>'}).join("")+'</div>'}
+function field(id,label,extra){return '<label for="'+id+'">'+label+'</label><input id="'+id+'" '+(extra||"")+'><div class="err" id="e-'+id+'"></div>'}
+function openForm(){
+  if(new Date()>DEADLINE){body.innerHTML=head()+info()+'<p>Reservations closed on 20 November 2026.</p>';dlg.showModal();return}
+  body.innerHTML=head()+info()+
+  field("n","Name of student",'autocomplete="name"')+
+  field("pn","Name to be printed",'placeholder="As it should appear on the merch"')+
+  field("c","Course",'placeholder="e.g. B.Sc. (H) Chemistry"')+
+  field("p","Contact no",'inputmode="numeric" maxlength="10" autocomplete="tel"')+
+  '<label for="b">Batch</label><select id="b">'+BATCHES.map(function(x){return '<option>'+x+'</option>'}).join("")+'</select>'+
+  '<label>Merch type</label>'+opts("item",MERCH,0)+
+  '<label>Size chart</label>'+opts("size",SIZES,3)+
+  '<label>Payment</label><div class="qr"><div class="box">'+(QR_SRC?'<img alt="Payment QR code" src="'+QR_SRC+'">':'Payment QR will appear here')+'</div><p>Scan this QR, complete the payment, then upload the screenshot below.</p></div>'+
+  '<label for="s">Upload payment screenshot</label><input id="s" type="file" accept="image/*"><div class="err" id="e-s"></div>'+
+  '<button class="btn" type="button" id="go">Reserve my merch</button>';
+  $("#go").onclick=submit;dlg.showModal()}
+function v(id){return $("#"+id).value.trim()}
+function bad(id,m){$("#e-"+id).textContent=m;return 1}
+function submit(){
+  var n=0;["n","pn","c","p","s"].forEach(function(i){$("#e-"+i).textContent=""});
+  if(v("n").length<3)n=bad("n","Enter your full name.");
+  if(v("pn").length<2)n=bad("pn","Enter the name to print.");
+  if(!v("c"))n=bad("c","Enter your course.");
+  if(!/^[6-9]\d{9}$/.test(v("p")))n=bad("p","Enter a 10-digit mobile number.");
+  shot=$("#s").files[0];
+  if(!shot)n=bad("s","Upload your payment screenshot.");
+  if(n)return;
+  var item=document.querySelector('input[name=item]:checked').value,size=document.querySelector('input[name=size]:checked').value;
+  var msg="KMC Merch Reservation (2026-27)\nName: "+v("n")+"\nPrint name: "+v("pn")+"\nCourse: "+v("c")+"\nBatch: "+v("b")+"\nContact: "+v("p")+"\nMerch: "+item+"\nSize: "+size+"\n(Payment screenshot attached)";
+  body.innerHTML=head()+'<p>Almost done. Send these details and your screenshot to the Union. Your reservation counts once they receive it.</p><div class="summary" id="sm"></div>'+
+  '<button class="btn" id="sd" type="button">Send to the Union</button><button class="btn alt" id="cp" type="button">Copy details</button>';
+  $("#sm").textContent=msg;
+  $("#sd").onclick=function(){
+    if(navigator.canShare&&navigator.canShare({files:[shot]})){
+      navigator.share({files:[shot],text:msg}).catch(function(){toast("Sharing cancelled.")});
+    }else{
+      window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(msg),"_blank","noopener");
+      toast("Attach your payment screenshot in the chat.");
+    }};
+  $("#cp").onclick=function(){try{navigator.clipboard.writeText(msg).then(function(){toast("Details copied.")})}catch(e){toast("Copy failed. Select the text instead.")}}}
+</script>
+</body>
+</html>
