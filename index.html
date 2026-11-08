@@ -181,6 +181,16 @@ input[type=file]{font-size:.85rem;padding:8px 0}
 .szb{display:block;margin:8px 0 0;padding:0;border:0;background:none;color:var(--brick);font:inherit;font-size:.8rem;font-weight:600;text-decoration:underline;cursor:pointer}
 .szc{display:block;width:100%;margin-top:8px;border-radius:10px;border:1px solid #ead3c9}
 .szc[hidden]{display:none}
+
+/* 3 QR payment */
+.qn{margin:0 0 10px;font-size:.82rem}
+.qrs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.qc{min-width:0;text-align:center}
+.qc .box{border:1px solid #ead3c9;border-radius:10px;overflow:hidden;background:#fff}
+.qc .box img{display:block;width:100%;height:auto}
+.qc b{display:block;font-size:.75rem;margin:6px 0 4px}
+.qc .upi{padding:6px 10px;font-size:.7rem}
+@media (max-width:520px){.qrs{grid-template-columns:1fr}.qc .box{max-width:220px;margin:0 auto}}
 </style>
 </head>
 <body>
@@ -214,11 +224,12 @@ var MERCH = [
 var SIZES = ["S","M","L","XL","XXL"];
 var CHART = "img/size-chart.jpeg";
 var BATCHES = ["2024","2025","2026","2027","2028","2029","2030"];
-// Payment accounts. PAY[0] = main QR, PAY[1] = backup QR (shown via "QR not working?" toggle)
+// Payment accounts. All 3 QRs shown; student pays on any 1 and picks which one in "Paid to".
 var PAY = [
  {id:"saharanparag@oksbi",name:"Parag Saharan",qr:"img/qr-main.jpeg"},
- {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.jpeg"}
-], pi = 0;
+ {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.jpeg"},
+ {id:"kunal862@freecharge",name:"Kunal",qr:"img/qr-kunal.jpeg"}
+];
 var DEADLINE = new Date("2026-11-20T23:59:59+05:30");
 var WA_NUMBER = "917337550668"; // President
 var FORM_EP = "https://script.google.com/macros/s/AKfycbyMZd1r2m-_ZzZa6bInGjSmjnXXMl2Goi8EHbFjjzMUnpw-CfNi_Ey6UH9pMOoqNe9G/exec"; // paste Apps Script web app URL here to store responses in Google Sheet
@@ -272,6 +283,7 @@ function info(){return '<div class="brief"><p class="meta"><b>Last date: 20 Nov 
 function opts(name,arr,def){return '<div class="opts">'+arr.map(function(x,i){return '<label class="opt"><input type="radio" name="'+name+'" value="'+x+'"'+(i===def?' checked':'')+'><span>'+x+'</span></label>'}).join("")+'</div>'}
 function items(){return '<div class="items">'+MERCH.map(function(m,i){return '<label class="it"><input type="radio" name="item" value="'+i+'"'+(i===0?' checked':'')+'><span><img alt="'+m.n+'" src="'+m.i+'"><em>'+m.n+'<i>₹'+m.p+'</i></em></span></label>'}).join("")+'</div>'}
 function field(id,label,extra){return '<div><label for="'+id+'">'+label+'</label><input id="'+id+'" '+(extra||"")+'><div class="err" id="e-'+id+'"></div></div>'}
+function payTo(){return PAY[+document.querySelector('input[name=pay]:checked').value]}
 function openForm(){
   history.replaceState(null,"",location.pathname+location.search+"#merch");
   if(new Date()>DEADLINE){body.innerHTML=head()+info()+'<p>Reservations closed on 20 November 2026.</p>';if(!dlg.open)dlg.showModal();return}
@@ -281,15 +293,16 @@ function openForm(){
   '<div class="row"><div><label for="b">Batch</label><select id="b">'+BATCHES.map(function(x){return '<option>'+x+'</option>'}).join("")+'</select></div>'+
   '<div><label>Size</label>'+opts("size",SIZES,2)+'</div></div>'+'<button class="szb" type="button" id="szb">View size chart</button><img class="szc" id="szc" alt="Size chart" src="'+CHART+'" hidden>'+
   '<div class="mh"><label>Merch type</label><div class="vt"><button type="button" data-v="slide" class="on">Slide</button><button type="button" data-v="grid">Grid</button></div></div>'+items().replace('class="items"','class="items slide" id="items"')+'<div class="dots" id="dots"></div><p class="sel" id="sel"></p>'+
-  '<label>Payment</label><div class="qr"><div class="box"><img id="qri" alt="Payment QR code" src="'+PAY[0].qr+'"></div><div class="qt"><p>Scan, pay, then upload the screenshot.</p><a class="upi" id="upi" href="#">Pay in UPI app</a><p class="id" id="uid"></p><button class="szb" type="button" id="alt"></button></div></div>'+
+  '<label>Payment</label><p class="qn"><b>Pay on any 1 QR</b>, then upload the screenshot.</p><div class="qrs">'+PAY.map(function(a,i){return '<div class="qc"><div class="box"><img alt="Payment QR '+a.name+'" src="'+a.qr+'"></div><b>'+a.name+'</b>'+(a.id?'<a class="upi" href="#" data-i="'+i+'">Pay in UPI app</a>':'')+'</div>'}).join("")+'</div>'+
+  '<label>Paid to</label><div class="opts">'+PAY.map(function(a,i){return '<label class="opt"><input type="radio" name="pay" value="'+i+'"'+(i===0?' checked':'')+'><span>'+a.name+'</span></label>'}).join("")+'</div>'+
   '<label for="s">Upload payment screenshot</label><input id="s" type="file" accept="image/*"><div class="err" id="e-s"></div>'+
   '<button class="btn" type="button" id="go">Reserve my merch</button>'+
   '<button class="lk" type="button" id="lk">Copy direct link to this form</button>';
   $("#go").onclick=submit;
   $("#szb").onclick=function(){var i=$("#szc");i.hidden=!i.hidden;this.textContent=i.hidden?"View size chart":"Hide size chart"};
-  // updates UPI link, QR image, UPI id and toggle label for the selected item + account
-  function upd(){var m=MERCH[+document.querySelector('input[name=item]:checked').value],a=PAY[pi];$("#upi").href="upi://pay?pa="+a.id+"&pn="+encodeURIComponent(a.name)+"&am="+m.p+"&cu=INR&tn=KMC%20Merch";$("#qri").src=a.qr;$("#uid").textContent=a.id;$("#alt").textContent=pi?"Back to main QR":"QR not working? Use backup QR"}
-  document.querySelectorAll('input[name=item]').forEach(function(r){r.onchange=upd});pi=0;upd();initItems();$("#alt").onclick=function(){pi=1-pi;upd()};
+  // updates every UPI link with the amount of the selected item
+  function upd(){var m=MERCH[+document.querySelector('input[name=item]:checked').value];document.querySelectorAll('.upi').forEach(function(u){var a=PAY[+u.dataset.i];u.href="upi://pay?pa="+a.id+"&pn="+encodeURIComponent(a.name)+"&am="+m.p+"&cu=INR&tn=KMC%20Merch"})}
+  document.querySelectorAll('input[name=item]').forEach(function(r){r.onchange=upd});upd();initItems();
   $("#lk").onclick=function(){var u=location.href.split("#")[0]+"#merch";try{navigator.clipboard.writeText(u).then(function(){toast("Form link copied.")},function(){toast(u)})}catch(e){toast(u)}};
   if(!dlg.open)dlg.showModal()}
 function initItems(){
@@ -315,7 +328,7 @@ function send(it,size){
  var g=$('#go');g.disabled=true;g.textContent='Submitting…';
  compress(shot,function(img){
   if(!img){g.disabled=false;g.textContent='Reserve my merch';bad('s','Could not read this image. Try another screenshot.');return}
-  var d={name:v('n'),printName:v('pn'),course:v('c'),batch:v('b'),contact:v('p'),merch:'KMC Merch - '+it.n,size:size,price:it.p,payTo:PAY[pi].id,shot:img};
+  var d={name:v('n'),printName:v('pn'),course:v('c'),batch:v('b'),contact:v('p'),merch:'KMC Merch - '+it.n,size:size,price:it.p,payTo:payTo().name,shot:img};
   fetch(FORM_EP,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(d)}).then(function(){
    body.innerHTML=head()+'<p><b>Reservation received.</b> The Union will confirm on your contact number after checking the payment.</p><button class="btn" type="button" onclick="dlg.close()">Done</button>';
   },function(){g.disabled=false;g.textContent='Reserve my merch';toast('Network error. Try again.')});
@@ -330,10 +343,10 @@ function submit(){
   if(!v("c"))n=bad("c","Enter your course.");
   if(!/^[6-9]\d{9}$/.test(v("p")))n=bad("p","Enter a 10-digit mobile number.");
   shot=$("#s").files[0];
-  if(!shot)n=bad("s","Upload your payment screenshot.");else if(shot.type.indexOf("image/")!==0)n=bad("s","Upload an image file (jpeg or jpeg).");
+  if(!shot)n=bad("s","Upload your payment screenshot.");else if(shot.type.indexOf("image/")!==0)n=bad("s","Upload an image file (jpg or png).");
   if(n)return;
   var it=MERCH[+document.querySelector('input[name=item]:checked').value],size=document.querySelector('input[name=size]:checked').value;
-  var msg="KMC Merch Reservation (2026-27)\nName: "+v("n")+"\nPrint name: "+v("pn")+"\nCourse: "+v("c")+"\nBatch: "+v("b")+"\nContact: "+v("p")+"\nMerch: KMC Merch - "+it.n+"\nSize: "+size+"\nPrice: ₹"+it.p+"\nPaid to: "+PAY[pi].id+"\n(Payment screenshot attached)";
+  var msg="KMC Merch Reservation (2026-27)\nName: "+v("n")+"\nPrint name: "+v("pn")+"\nCourse: "+v("c")+"\nBatch: "+v("b")+"\nContact: "+v("p")+"\nMerch: KMC Merch - "+it.n+"\nSize: "+size+"\nPrice: ₹"+it.p+"\nPaid to: "+payTo().name+"\n(Payment screenshot attached)";
   if(FORM_EP)return send(it,size);body.innerHTML=head()+'<p>Almost done. Send these details and your screenshot to the Union. Your reservation counts once they receive it.</p><div class="summary" id="sm"></div>'+
   '<button class="btn" id="sd" type="button">Send to the Union</button><button class="btn alt" id="cp" type="button">Copy details</button>';
   $("#sm").textContent=msg;
