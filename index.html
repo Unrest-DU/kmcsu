@@ -216,8 +216,8 @@ var CHART = "img/size-chart.jpeg";
 var BATCHES = ["2024","2025","2026","2027","2028","2029","2030"];
 // Payment accounts. PAY[0] = main QR, PAY[1] = backup QR (shown via "QR not working?" toggle)
 var PAY = [
- {id:"saharanparag@oksbi",name:"Parag Saharan",qr:"img/qr-main.png"},
- {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.png"}
+ {id:"saharanparag@oksbi",name:"Parag Saharan",qr:"img/qr-main.jpeg"},
+ {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.jpeg"}
 ], pi = 0;
 var DEADLINE = new Date("2026-11-20T23:59:59+05:30");
 var WA_NUMBER = "917337550668"; // President
@@ -330,7 +330,7 @@ function submit(){
   if(!v("c"))n=bad("c","Enter your course.");
   if(!/^[6-9]\d{9}$/.test(v("p")))n=bad("p","Enter a 10-digit mobile number.");
   shot=$("#s").files[0];
-  if(!shot)n=bad("s","Upload your payment screenshot.");else if(shot.type.indexOf("image/")!==0)n=bad("s","Upload an image file (png or jpeg).");
+  if(!shot)n=bad("s","Upload your payment screenshot.");else if(shot.type.indexOf("image/")!==0)n=bad("s","Upload an image file (jpeg or jpeg).");
   if(n)return;
   var it=MERCH[+document.querySelector('input[name=item]:checked').value],size=document.querySelector('input[name=size]:checked').value;
   var msg="KMC Merch Reservation (2026-27)\nName: "+v("n")+"\nPrint name: "+v("pn")+"\nCourse: "+v("c")+"\nBatch: "+v("b")+"\nContact: "+v("p")+"\nMerch: KMC Merch - "+it.n+"\nSize: "+size+"\nPrice: ₹"+it.p+"\nPaid to: "+PAY[pi].id+"\n(Payment screenshot attached)";
