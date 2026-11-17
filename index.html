@@ -182,14 +182,17 @@ input[type=file]{font-size:.85rem;padding:8px 0}
 .szc{display:block;width:100%;margin-top:8px;border-radius:10px;border:1px solid #ead3c9}
 .szc[hidden]{display:none}
 
-/* 3 QR payment */
+/* 2 QR payment */
 .qn{margin:0 0 10px;font-size:.82rem}
-.qrs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.qrs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .qc{min-width:0;text-align:center}
 .qc .box{border:1px solid #ead3c9;border-radius:10px;overflow:hidden;background:#fff}
 .qc .box img{display:block;width:100%;height:auto}
 .qc b{display:block;font-size:.75rem;margin:6px 0 4px}
 .qc .upi{padding:6px 10px;font-size:.7rem}
+.uid{display:block;width:100%;margin:0 0 6px;padding:5px 6px;border:1px dashed #d3a899;border-radius:8px;background:transparent;color:var(--ink);font:inherit;font-size:.72rem;font-weight:600;word-break:break-all;cursor:pointer}
+.ts{display:block;margin:12px auto 0;padding:9px 16px;border-radius:99px;border:1px solid var(--brick);background:transparent;color:var(--brick);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer}
+.ts:hover{background:var(--brick);color:var(--paper)}
 @media (max-width:520px){.qrs{grid-template-columns:1fr}.qc .box{max-width:220px;margin:0 auto}}
 </style>
 </head>
@@ -224,11 +227,10 @@ var MERCH = [
 var SIZES = ["S","M","L","XL","XXL"];
 var CHART = "img/size-chart.jpeg";
 var BATCHES = ["2024","2025","2026","2027","2028","2029","2030"];
-// Payment accounts. All 3 QRs shown; student pays on any 1 and picks which one in "Paid to".
+// Payment accounts. Both QRs shown; student pays on either one and picks which one in "Paid to".
 var PAY = [
  {id:"saharanparag@oksbi",name:"Parag Saharan",qr:"img/qr-main.jpeg"},
- {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.jpeg"},
- {id:"kunal862@freecharge",name:"Kunal",qr:"img/qr-kunal.jpeg"}
+ {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.jpeg"}
 ];
 var DEADLINE = new Date("2026-11-20T23:59:59+05:30");
 var WA_NUMBER = "917337550668"; // President
@@ -293,12 +295,15 @@ function openForm(){
   '<div class="row"><div><label for="b">Batch</label><select id="b">'+BATCHES.map(function(x){return '<option>'+x+'</option>'}).join("")+'</select></div>'+
   '<div><label>Size</label>'+opts("size",SIZES,2)+'</div></div>'+'<button class="szb" type="button" id="szb">View size chart</button><img class="szc" id="szc" alt="Size chart" src="'+CHART+'" hidden>'+
   '<div class="mh"><label>Merch type</label><div class="vt"><button type="button" data-v="slide" class="on">Slide</button><button type="button" data-v="grid">Grid</button></div></div>'+items().replace('class="items"','class="items slide" id="items"')+'<div class="dots" id="dots"></div><p class="sel" id="sel"></p>'+
-  '<label>Payment</label><p class="qn"><b>Pay on any 1 QR</b>, then upload the screenshot.</p><div class="qrs">'+PAY.map(function(a,i){return '<div class="qc"><div class="box"><img alt="Payment QR '+a.name+'" src="'+a.qr+'"></div><b>'+a.name+'</b>'+(a.id?'<a class="upi" href="#" data-i="'+i+'">Pay in UPI app</a>':'')+'</div>'}).join("")+'</div>'+
+  '<label>Payment</label><p class="qn"><b>Pay on any 1 QR</b>, then upload the screenshot.</p><div class="qrs">'+PAY.map(function(a,i){return '<div class="qc"><div class="box"><img alt="Payment QR '+a.name+'" src="'+a.qr+'"></div><b>'+a.name+'</b><button type="button" class="uid" data-id="'+a.id+'" title="Tap to copy">'+a.id+'</button><a class="upi" href="#" data-i="'+i+'">Pay in UPI app</a></div>'}).join("")+'</div>'+
+  '<button class="ts" type="button" id="tsb">Not able to make the payment?</button>'+
   '<label>Paid to</label><div class="opts">'+PAY.map(function(a,i){return '<label class="opt"><input type="radio" name="pay" value="'+i+'"'+(i===0?' checked':'')+'><span>'+a.name+'</span></label>'}).join("")+'</div>'+
   '<label for="s">Upload payment screenshot</label><input id="s" type="file" accept="image/*"><div class="err" id="e-s"></div>'+
   '<button class="btn" type="button" id="go">Reserve my merch</button>'+
   '<button class="lk" type="button" id="lk">Copy direct link to this form</button>';
   $("#go").onclick=submit;
+  $("#tsb").onclick=function(){window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent("Hi Parag, I'm not able to make the payment for the KMC Merch."),"_blank","noopener")};
+  document.querySelectorAll('.uid').forEach(function(b){b.onclick=function(){try{navigator.clipboard.writeText(b.dataset.id).then(function(){toast("UPI ID copied.")},function(){toast(b.dataset.id)})}catch(e){toast(b.dataset.id)}}});
   $("#szb").onclick=function(){var i=$("#szc");i.hidden=!i.hidden;this.textContent=i.hidden?"View size chart":"Hide size chart"};
   // updates every UPI link with the amount of the selected item
   function upd(){var m=MERCH[+document.querySelector('input[name=item]:checked').value];document.querySelectorAll('.upi').forEach(function(u){var a=PAY[+u.dataset.i];u.href="upi://pay?pa="+a.id+"&pn="+encodeURIComponent(a.name)+"&am="+m.p+"&cu=INR&tn=KMC%20Merch"})}
