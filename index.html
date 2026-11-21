@@ -232,7 +232,7 @@ var PAY = [
  {id:"saharanparag@oksbi",name:"Parag Saharan",qr:"img/qr-main.jpeg"},
  {id:"8306676627@axl",name:"Rishab Chandani",qr:"img/qr-backup.jpeg"}
 ];
-var DEADLINE = new Date("2026-11-20T23:59:59+05:30");
+var DEADLINE = new Date("2026-12-10T23:59:59+05:30");
 var WA_NUMBER = "917337550668"; // President
 var FORM_EP = "https://script.google.com/macros/s/AKfycbyMZd1r2m-_ZzZa6bInGjSmjnXXMl2Goi8EHbFjjzMUnpw-CfNi_Ey6UH9pMOoqNe9G/exec"; // paste Apps Script web app URL here to store responses in Google Sheet
 // --------------------
@@ -281,14 +281,14 @@ var dlg=$("#dlg"),body=$("#dbody"),shot=null;
 $("#merch").addEventListener("click",openForm);
 var slideT;dlg.addEventListener("close",function(){clearInterval(slideT);if(location.hash==="#merch")history.replaceState(null,"",location.pathname+location.search)});
 function head(){return '<button class="close" type="button" aria-label="Close" onclick="dlg.close()">×</button><h2 id="ttl">Official College Merch</h2><p class="sub2">Batch of 2026–2027 · Limited quantity only</p>'}
-function info(){return '<div class="brief"><p class="meta"><b>Last date: 20 Nov 2026.</b> Fill details accurately, pay via QR, upload the screenshot.</p><div class="cts"><div><b>Parag Saharan</b><small>President</small><a href="tel:7337550668">7337550668</a></div><div><b>Zuhaib Khan</b><small>Vice-President</small><a href="tel:9140221682">9140221682</a></div><div><b>Shafiq Ahmed</b><small>Joint-Secretary</small><a href="tel:7889323420">7889323420</a></div></div></div>'}
+function info(){return '<div class="brief"><p class="meta"><b>Last date: 10 Dec 2026.</b> Fill details accurately, pay via QR, upload the screenshot.</p><div class="cts"><div><b>Parag Saharan</b><small>President</small><a href="tel:7337550668">7337550668</a></div><div><b>Zuhaib Khan</b><small>Vice-President</small><a href="tel:9140221682">9140221682</a></div><div><b>Shafiq Ahmed</b><small>Joint-Secretary</small><a href="tel:7889323420">7889323420</a></div></div></div>'}
 function opts(name,arr,def){return '<div class="opts">'+arr.map(function(x,i){return '<label class="opt"><input type="radio" name="'+name+'" value="'+x+'"'+(i===def?' checked':'')+'><span>'+x+'</span></label>'}).join("")+'</div>'}
 function items(){return '<div class="items">'+MERCH.map(function(m,i){return '<label class="it"><input type="radio" name="item" value="'+i+'"'+(i===0?' checked':'')+'><span><img alt="'+m.n+'" src="'+m.i+'"><em>'+m.n+'<i>₹'+m.p+'</i></em></span></label>'}).join("")+'</div>'}
 function field(id,label,extra){return '<div><label for="'+id+'">'+label+'</label><input id="'+id+'" '+(extra||"")+'><div class="err" id="e-'+id+'"></div></div>'}
 function payTo(){return PAY[+document.querySelector('input[name=pay]:checked').value]}
 function openForm(){
   history.replaceState(null,"",location.pathname+location.search+"#merch");
-  if(new Date()>DEADLINE){body.innerHTML=head()+info()+'<p>Reservations closed on 20 November 2026.</p>';if(!dlg.open)dlg.showModal();return}
+  if(new Date()>DEADLINE){body.innerHTML=head()+info()+'<p>Reservations closed on 10 December 2026.</p>';if(!dlg.open)dlg.showModal();return}
   body.innerHTML=head()+info()+
   '<div class="row">'+field("n","Name of student",'autocomplete="name"')+field("pn","Name to be printed",'placeholder="As on the merch"')+'</div>'+
   '<div class="row">'+field("c","Course",'placeholder="e.g. B.Sc. (H) Chemistry"')+field("p","Contact no",'inputmode="numeric" maxlength="10" autocomplete="tel"')+'</div>'+
